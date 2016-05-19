@@ -69,6 +69,7 @@ public class MyFirstVerticle extends AbstractVerticle {
     router.get("/api/whiskies/:id").handler(this::getOne);
     router.put("/api/whiskies/:id").handler(this::updateOne);
     router.delete("/api/whiskies/:id").handler(this::deleteOne);
+	router.get("/api/pi").handler(this::calcPi);
 
 
     // Create the HTTP server and pass the "accept" method to the request handler.
@@ -97,6 +98,14 @@ public class MyFirstVerticle extends AbstractVerticle {
     mongo.close();
   }
 
+  private void calcPi(RoutingContext routingContext) {
+    //PiSlow.calc();
+	routingContext.response()
+              .setStatusCode(200)
+              .putHeader("content-type", "application/json; charset=utf-8")
+              .end(Json.encodePrettily("pi not calculated"));
+  }
+  
   private void addOne(RoutingContext routingContext) {
     final Whisky whisky = Json.decodeValue(routingContext.getBodyAsString(),
         Whisky.class);
